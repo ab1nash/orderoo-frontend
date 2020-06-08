@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { lazy, Suspense } from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import LoadingPage from './components/Loading'
+import NavBar from './components/NavBar'
+import Footer from './components/Footer'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './App.scss'
+
+const Home = lazy(() => import('./components/Home'))
+
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      table: '2',
+    }
+  }
+  render() {
+    const { table } = this.state
+    return (
+      <Router>
+        <div className="App">
+          <NavBar />
+          <Suspense fallback={<LoadingPage />}>
+            <Switch>
+              <Route exact path="/" render={() => <Home table={table} />} />
+            </Switch>
+          </Suspense>
+          <Footer />
+        </div>
+      </Router>
+    )
+  }
 }
 
-export default App;
+export default App
