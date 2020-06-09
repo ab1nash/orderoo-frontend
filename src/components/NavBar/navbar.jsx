@@ -19,7 +19,7 @@ const Navbar = () => {
           className="justify-content-between"
         >
           <div className="container">
-            <Navbars.Brand action="true" href="/">
+            <Navbars.Brand action="true">
               <a href={'https://facebook.com'}>
                 <i className="fa fa-facebook-square" aria-hidden="true"></i>
               </a>

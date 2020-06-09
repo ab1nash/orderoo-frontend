@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import './home.scss'
 
 export default class Home extends Component {
@@ -9,7 +10,7 @@ export default class Home extends Component {
     }
   }
   render() {
-    const { table } = this.props
+    const { table, isMenuLoaded } = this.props
     return (
       <div className="home-container">
         <div className="container mt-4 mb-2 welcome-text">
@@ -18,19 +19,18 @@ export default class Home extends Component {
             <br />
             You are sitting on table {table}. Hope you enjoy your meal!
           </h3>
+          {/* {isMenuLoaded ? <div>a</div> : <div>b</div>} */}
           <div className="row mx-2">
-            <button
-              type="button"
-              class="btn btn-success col-md-4 col-xs-8 mx-auto my-2"
-            >
-              ORDER NOW
-            </button>
-            <button
-              type="button"
-              class="btn btn-danger col-md-4 col-xs-8 mx-auto my-2"
-            >
-              CANCEL
-            </button>
+            <Link to={'/menu'} className="col-md-6 col-xs-8 mx-auto">
+              <button type="button" className="btn btn-lg btn-success  my-2">
+                ORDER NOW
+              </button>
+            </Link>
+            <Link to={'#'} className="col-md-6 col-xs-8 mx-auto">
+              <button type="button" className="btn btn-lg btn-danger   my-2">
+                CANCEL
+              </button>
+            </Link>
           </div>
         </div>
       </div>
