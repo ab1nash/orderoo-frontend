@@ -46,19 +46,21 @@ class App extends React.Component {
         <Router>
           <div className="App">
             <NavBar />
-            <Suspense fallback={<LoadingPage />}>
-              <Switch>
-                <Route
-                  exact
-                  path="/"
-                  render={() => (
-                    <Home table={table} isMenuLoaded={isMenuLoaded} />
-                  )}
-                />
-                <Route path="/menu" render={() => <MenuPage menu={menu} />} />
-                <Route path="/success" render={() => <Success />} />
-              </Switch>
-            </Suspense>
+            <div style={{ minHeight: '45vh' }}>
+              <Suspense fallback={<LoadingPage />}>
+                <Switch>
+                  <Route
+                    exact
+                    path="/"
+                    render={() => (
+                      <Home table={table} isMenuLoaded={isMenuLoaded} />
+                    )}
+                  />
+                  <Route path="/menu" render={() => <MenuPage menu={menu} />} />
+                  <Route path="/success" render={() => <Success />} />
+                </Switch>
+              </Suspense>
+            </div>
             <Footer />
           </div>
         </Router>
