@@ -11,6 +11,7 @@ export default class Payment extends Component {
   }
   processPay() {
     console.log('proc pay')
+    // go to status page
   }
   render() {
     return (

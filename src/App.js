@@ -9,7 +9,10 @@ import './App.scss'
 
 const Home = lazy(() => import('./components/Home'))
 const MenuPage = lazy(() => import('./components/MenuPage'))
+const Review = lazy(() => import('./components/Review'))
+const Payment = lazy(() => import('./components/Payment'))
 const Success = lazy(() => import('./components/Success'))
+const NotFound = lazy(() => import('./components/NotFound'))
 
 class App extends React.Component {
   constructor(props) {
@@ -57,7 +60,10 @@ class App extends React.Component {
                     )}
                   />
                   <Route path="/menu" render={() => <MenuPage menu={menu} />} />
+                  <Route path="/review" render={() => <Review />} />
+                  <Route path="/payment" render={() => <Payment />} />
                   <Route path="/success" render={() => <Success />} />
+                  <Route render={() => <NotFound />} />
                 </Switch>
               </Suspense>
             </div>
