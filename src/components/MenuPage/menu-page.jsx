@@ -19,16 +19,22 @@ class ShowSides extends React.Component {
   }
 
   render() {
-    const { item } = this.props
+    const { item, addToOrder } = this.props
     const { quantity, price } = this.state
     return (
       <div className="item-row">
         <div className="row mb-2 ">
-          <div className="col-md-6 col-sm-6 col-xs-4 mt-4 mb-2">
-            {item.name}
-          </div>
-          <div className="col-md-2 col-sm-6 col-xs-4 mt-4 mb-2">
-            {item.price}
+          <div className="col-8">
+            <div className="row">
+              <div className="col-md-6 col-sm-6 col-xs-4 mt-4 mb-2">
+                {item.name}
+              </div>
+              <div className="col-md-2 col-sm-2 col-xs-4 mt-4 mb-2">
+                {item.price}
+              </div>
+            </div>
+            <br />
+            <div className="row mx-auto">{item.description}</div>
           </div>
           <div className="col-md-2 ml-2" style={{ minHeight: '200px' }}>
             <img
@@ -37,16 +43,16 @@ class ShowSides extends React.Component {
             />
           </div>
         </div>
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">$</span>
-            <span class="input-group-text" style={{ minWidth: '9rem' }}>
+        <div className="input-group mb-3">
+          <div className="input-group-prepend">
+            <span className="input-group-text">$</span>
+            <span className="input-group-text" style={{ minWidth: '9rem' }}>
               {price}
             </span>
           </div>
-          <div class="input-group-append" id="button-addon4">
+          <div className="input-group-append" id="button-addon4">
             <button
-              class="btn btn-outline-secondary"
+              className="btn btn-outline-secondary"
               type="button"
               onClick={() => {
                 this.setState(
@@ -55,20 +61,21 @@ class ShowSides extends React.Component {
                     quantity: !quantity ? 0 : quantity - 1,
                   },
                   () => {
-                    console.log(quantity)
+                    // console.log(quantity)
                     if (quantity >= 1) this.props.updateTotal(-item.price)
+                    // something to remove order from order list
                   }
                 )
               }}
             >
               {/* <img src={subCircle} className="fa-ico" alt="-" /> */}
-              <i class="fa fa-angle-down" aria-hidden="true"></i>
+              <i className="fa fa-angle-down" aria-hidden="true"></i>
             </button>
-            <span class="input-group-text" style={{ minWidth: '2rem' }}>
+            <span className="input-group-text" style={{ minWidth: '2rem' }}>
               {quantity}
             </span>
             <button
-              class="btn btn-outline-secondary"
+              className="btn btn-outline-secondary"
               type="button"
               onClick={() => {
                 this.setState(
@@ -79,13 +86,33 @@ class ShowSides extends React.Component {
                   () => {
                     console.log(quantity)
                     if (quantity >= 0) this.props.updateTotal(item.price)
+                    addToOrder(item, quantity + 1)
                   }
                 )
               }}
             >
-              <i class="fa fa-angle-up" aria-hidden="true"></i>
+              <i className="fa fa-angle-up" aria-hidden="true"></i>
             </button>
           </div>
+        </div>
+        <div
+          className="container-sm ml-3 mr-3 my-3 shadow"
+          style={item.sides ? { border: 'solid 1px' } : {}}
+        >
+          {item.sides ? (
+            <h5 className="mx-auto pt-2 pb-2">Sides for this dish</h5>
+          ) : null}
+          {item.sides
+            ? item.sides.map((item) => {
+                return (
+                  <ShowSides
+                    item={item}
+                    updateTotal={this.props.updateTotal}
+                    addToOrder={this.props.addToOrder}
+                  />
+                )
+              })
+            : null}
         </div>
       </div>
     )
@@ -99,13 +126,18 @@ export default class Home extends Component {
       order: [],
       total: 0,
       isMenuLoaded: false,
+      call: 'Menu',
       // menu: [],
     }
     const updateTotal = this.updateTotal.bind(this)
+    const addToOrder = this.addToOrder.bind(this)
   }
 
   componentDidMount() {
-    db.collection('Menu')
+    //[TOFIX after testing] Calling it here is causing useless reads at every change.
+    // a hack for now is to set a state
+
+    db.collection(this.state.call)
       .doc('1234')
       .get()
       .then((doc) => {
@@ -114,7 +146,7 @@ export default class Home extends Component {
         })
       })
       .then(() => {
-        this.setState({ isMenuLoaded: true })
+        this.setState({ isMenuLoaded: true, call: '' })
       })
   }
 
@@ -123,9 +155,18 @@ export default class Home extends Component {
     this.setState({ total: Number((total + val).toFixed(2)) })
   }
 
+  addToOrder = (dishObj, qty) => {
+    const { order } = this.state
+    const newEl = {
+      dishObj,
+      qty,
+    }
+    this.setState({ order: [...order, newEl] })
+  }
+
   render() {
     if (this.state.isMenuLoaded) {
-      const { menu, total } = this.state
+      const { menu, total, order } = this.state
       // console.log(menu)
 
       return (
@@ -139,11 +180,55 @@ export default class Home extends Component {
                   <i>{menu.description}</i>
                 </h5>
                 <div className="container main-card border shadow-sm mt-4 pt-2">
+                  <h4>Starters</h4>
+                  <hr />
+                  {menu.menuItems.starters.map((item, idx) => {
+                    return (
+                      <ShowSides
+                        item={item}
+                        key={idx}
+                        updateTotal={this.updateTotal}
+                        addToOrder={this.addToOrder}
+                      />
+                    )
+                  })}
+                </div>
+                <div className="container main-card border shadow-sm mt-4 pt-2">
+                  <h4>Main Course</h4>
+                  <hr />
+                  {menu.menuItems.mainCourse.map((item) => {
+                    return (
+                      <ShowSides
+                        item={item}
+                        updateTotal={this.updateTotal}
+                        addToOrder={this.addToOrder}
+                      />
+                    )
+                  })}
+                </div>
+                <div className="container main-card border shadow-sm mt-4 pt-2">
                   <h4>Sides</h4>
                   <hr />
                   {menu.menuItems.sides.map((item) => {
                     return (
-                      <ShowSides item={item} updateTotal={this.updateTotal} />
+                      <ShowSides
+                        item={item}
+                        updateTotal={this.updateTotal}
+                        addToOrder={this.addToOrder}
+                      />
+                    )
+                  })}
+                </div>
+                <div className="container main-card border shadow-sm mt-4 pt-2">
+                  <h4>Beverages</h4>
+                  <hr />
+                  {menu.menuItems.beverages.map((item) => {
+                    return (
+                      <ShowSides
+                        item={item}
+                        updateTotal={this.updateTotal}
+                        addToOrder={this.addToOrder}
+                      />
                     )
                   })}
                 </div>
@@ -158,8 +243,8 @@ export default class Home extends Component {
               <Link to={'/review'} className="col-md-6 col-xs-8 mx-auto">
                 <button
                   type="button"
+                  onClick={() => this.props.setOrder(order)}
                   className="btn btn-lg btn-success col-md-6 col-xs-8 mx-auto my-2"
-                  onClick={this.nextPage}
                 >
                   VIEW CART
                 </button>

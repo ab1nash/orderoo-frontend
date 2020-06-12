@@ -10,14 +10,13 @@ export default class Review extends Component {
     }
   }
   render() {
+    const { order } = this.props
+    console.log(order)
     return (
       <div className="home-container">
         <div className="container mt-4 mb-2 welcome-text">
           <h3 style={{ minHeight: '4em' }}>REVIEW YOUR ORDER</h3>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
-          excepturi natus suscipit odit possimus ipsum aliquid deserunt eius?
-          Cumque excepturi odio nihil aperiam voluptatum inventore voluptate
-          quisquam laboriosam enim fuga?
+          {/* {order[0].order[0].name} */}
           {/* buttons */}
           <div className="row mx-2">
             <Link to={'/payment'} className="col-md-6 col-xs-8 mx-auto">

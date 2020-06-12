@@ -21,6 +21,7 @@ class App extends React.Component {
       isMenuLoaded: 'false',
       table: '2',
       menu: [],
+      order: [],
     }
   }
 
@@ -42,8 +43,12 @@ class App extends React.Component {
       })
   }
 
+  setOrder = (order) => {
+    this.setState({ order }, () => console.log('success'))
+  }
+
   render() {
-    const { table, menu, isMenuLoaded } = this.state
+    const { table, menu, isMenuLoaded, order } = this.state
     if (isMenuLoaded) {
       return (
         <Router>
@@ -59,8 +64,16 @@ class App extends React.Component {
                       <Home table={table} isMenuLoaded={isMenuLoaded} />
                     )}
                   />
-                  <Route path="/menu" render={() => <MenuPage menu={menu} />} />
-                  <Route path="/review" render={() => <Review />} />
+                  <Route
+                    path="/menu"
+                    render={() => (
+                      <MenuPage menu={menu} setOrder={this.setOrder} />
+                    )}
+                  />
+                  <Route
+                    path="/review"
+                    render={() => <Review order={order} />}
+                  />
                   <Route path="/payment" render={() => <Payment />} />
                   <Route path="/success" render={() => <Success />} />
                   <Route render={() => <NotFound />} />
