@@ -10,11 +10,12 @@ import addCircle from '../../content-constants/add_circle_grey_144x144.png'
 import subCircle from '../../content-constants/remove_circle_grey_144x144.png'
 
 class ShowSides extends React.Component {
+  // [order: backwards update]
   constructor(props) {
     super(props)
     this.state = {
-      quantity: 0,
       price: 0,
+      quantity: 0,
     }
   }
 
@@ -30,7 +31,7 @@ class ShowSides extends React.Component {
                 {item.name}
               </div>
               <div className="col-md-2 col-sm-2 col-xs-4 mt-4 mb-2">
-                {item.price}
+                $ {item.price}
               </div>
             </div>
             <br />
@@ -61,9 +62,10 @@ class ShowSides extends React.Component {
                     quantity: !quantity ? 0 : quantity - 1,
                   },
                   () => {
-                    // console.log(quantity)
+                    console.log(quantity)
                     if (quantity >= 1) this.props.updateTotal(-item.price)
                     // something to remove order from order list
+                    addToOrder(item, quantity - 1, 'remove')
                   }
                 )
               }}
@@ -155,19 +157,41 @@ export default class Home extends Component {
     this.setState({ total: Number((total + val).toFixed(2)) })
   }
 
-  addToOrder = (dishObj, qty) => {
+  // THIS WORKS. DO NOT MESS WITH THIS
+  addToOrder = (dishObj, qty, add = 'add') => {
     const { order } = this.state
     const newEl = {
       dishObj,
       qty,
     }
-    this.setState({ order: [...order, newEl] })
+
+    if (qty === 1 && add === 'add') {
+      this.setState({ order: [...order, newEl] })
+    } else if (qty === 0 && add === 'remove') {
+      this.setState({
+        order: this.state.order.filter((order) => {
+          return order.dishObj.id !== newEl.dishObj.id
+        }),
+      })
+    } else {
+      this.setState(
+        {
+          order: this.state.order.map((order) => {
+            if (order.dishObj.id === newEl.dishObj.id) {
+              order.qty = qty
+            }
+            return order
+          }),
+        },
+        () => console.log(this.state.order)
+      )
+    }
   }
 
   render() {
     if (this.state.isMenuLoaded) {
       const { menu, total, order } = this.state
-      // console.log(menu)
+      // console.log('render order--' + order + '--renend')
 
       return (
         <div className="home-container">
@@ -176,9 +200,7 @@ export default class Home extends Component {
             {/* menu */}
             <div className="menu mt-2 mb-2">
               <div className="menu-description text-justify">
-                <h5>
-                  <i>{menu.description}</i>
-                </h5>
+                <p className="font-italic">{menu.description}</p>
                 <div className="container main-card border shadow-sm mt-4 pt-2">
                   <h4>Starters</h4>
                   <hr />
@@ -243,10 +265,12 @@ export default class Home extends Component {
               <Link to={'/review'} className="col-md-6 col-xs-8 mx-auto">
                 <button
                   type="button"
-                  onClick={() => this.props.setOrder(order)}
-                  className="btn btn-lg btn-success col-md-6 col-xs-8 mx-auto my-2"
+                  onClick={() => {
+                    this.props.setOrder(order, total)
+                  }}
+                  className="btn btn-lg btn-success col-md-8 col-xs-8 mx-auto my-2"
                 >
-                  VIEW CART
+                  PROCEED TO CART
                 </button>
               </Link>
               {/* <Link to={'/'} className="col-md-6 col-xs-8 mx-auto">

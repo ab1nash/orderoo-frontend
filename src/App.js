@@ -22,6 +22,7 @@ class App extends React.Component {
       table: '2',
       menu: [],
       order: [],
+      total: 0,
     }
   }
 
@@ -43,12 +44,12 @@ class App extends React.Component {
       })
   }
 
-  setOrder = (order) => {
-    this.setState({ order }, () => console.log('success'))
+  setOrder = (order, total) => {
+    this.setState({ order, total })
   }
 
   render() {
-    const { table, menu, isMenuLoaded, order } = this.state
+    const { table, menu, isMenuLoaded, order, total } = this.state
     if (isMenuLoaded) {
       return (
         <Router>
@@ -72,9 +73,12 @@ class App extends React.Component {
                   />
                   <Route
                     path="/review"
-                    render={() => <Review order={order} />}
+                    render={() => <Review order={order} total={total} />}
                   />
-                  <Route path="/payment" render={() => <Payment />} />
+                  <Route
+                    path="/payment"
+                    render={() => <Payment total={total} />}
+                  />
                   <Route path="/success" render={() => <Success />} />
                   <Route render={() => <NotFound />} />
                 </Switch>
