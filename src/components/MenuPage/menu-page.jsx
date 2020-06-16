@@ -164,6 +164,8 @@ export default class Home extends Component {
         this.setState({ isMenuLoaded: true, call: '' })
       })
 
+    // do this on reload ?
+
     this.setState({ order: this.props.order, total: this.props.total })
   }
 
@@ -209,7 +211,6 @@ export default class Home extends Component {
   render() {
     if (this.state.isMenuLoaded) {
       const { menu, total, order } = this.state
-      // console.log('render order--' + order + '--renend')
 
       return (
         <div className="home-container">

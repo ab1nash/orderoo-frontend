@@ -42,10 +42,20 @@ class App extends React.Component {
       .then(() => {
         this.setState({ isMenuLoaded: true })
       })
+
+    if (localStorage.getItem('total')) {
+      this.setState({ total: Number(localStorage.getItem('total')) })
+    }
+    if (localStorage.getItem('order')) {
+      this.setState({ order: JSON.parse(localStorage.getItem('order')) })
+    }
   }
 
   setOrder = (order, total) => {
-    this.setState({ order, total })
+    this.setState({ order, total }, () => {
+      localStorage.setItem('order', JSON.stringify(order))
+      localStorage.setItem('total', total)
+    })
   }
 
   render() {
