@@ -19,14 +19,10 @@ class Element extends React.Component {
     return (
       <div className="item-row">
         <div className="row mb-2 ">
-          <div className="col-md-6 col-sm-6 col-xs-4 mt-4 mb-2">
-            {dishObj.name}
-          </div>
-          <div className="col-md-3 col-sm-3 col-xs-3 mt-4 mb-2">{qty}</div>
+          <div className="col mt-4 mb-2">{dishObj.name}</div>
+          <div className="col mt-4 mb-2">{qty}</div>
 
-          <div className="col-md-3 col-sm-3 col-xs-3 mt-4 mb-2">
-            $ {dishObj.price * qty}
-          </div>
+          <div className="col mt-4 mb-2">$ {dishObj.price * qty}</div>
         </div>
       </div>
     )
@@ -48,18 +44,11 @@ export default class Review extends Component {
         <div className="container mt-4 mb-2 welcome-text">
           <h3 style={{ minHeight: '4em' }}>REVIEW YOUR ORDER</h3>
           <div className="border container text-left">
-            <div className="item-row ">
+            <div className="item-row">
               <div className="row mb-2 ">
-                <div className="col-md-6 col-sm-6 col-xs-4 mt-4 mb-2 ">
-                  NAME
-                </div>
-                <div className="col-md-3 col-sm-3 col-xs-3 mt-4 mb-2 ">
-                  QUANTITY
-                </div>
-
-                <div className="col-md-3 col-sm-3 col-xs-3 mt-4 mb-2 ">
-                  PRICE
-                </div>
+                <div className="col mt-4 mb-2  ">NAME</div>
+                <div className="col mt-4 mb-2">QTY</div>
+                <div className="col mt-4 mb-2">PRICE</div>
               </div>
             </div>
             {/* order list */}
@@ -69,14 +58,10 @@ export default class Review extends Component {
             {/* order list */}
             <div className="item-row ">
               <div className="row mb-2 ">
-                <div className="col-md-6 col-sm-6 col-xs-4 mt-4 mb-2"></div>
-                <div className="col-md-3 col-sm-3 col-xs-3 mt-4 mb-2 ">
-                  TOTAL
-                </div>
+                <div className="col mt-4 mb-2"></div>
+                <div className="col mt-4 mb-2 ">TOTAL</div>
 
-                <div className="col-md-3 col-sm-3 col-xs-3 mt-4 mb-2 font-weight-bold">
-                  $ {total}
-                </div>
+                <div className="col mt-4 mb-2 font-weight-bold">$ {total}</div>
               </div>
             </div>
           </div>

@@ -213,10 +213,10 @@ export default class Home extends Component {
 
       return (
         <div className="home-container">
-          <div className="container mt-4 mb-2 welcome-text">
-            <h3 style={{ minHeight: '4em' }}>MENU</h3>
+          <div className="container mt-4 mb-2 welcome-text ">
+            <h3 style={{ minHeight: '1.5em' }}>MENU</h3>
             {/* menu */}
-            <div className="menu mt-2 mb-2">
+            <div className="menu mt-2 mb-2 border-top">
               <div className="menu-description text-justify">
                 <p className="font-italic">{menu.description}</p>
                 <div className="container main-card border shadow-sm mt-4 pt-2">
@@ -278,29 +278,31 @@ export default class Home extends Component {
               </div>
             </div>
             {/* menu */}
-            <div className="row shadow mx-auto mt-2 mb-2 pt-2 pb-2 pl-2 text-center border">
-              Your total is ${total}
-            </div>
-            {/* buttons */}
-            <div className="row mx-2">
-              <Link to={'/review'} className="col-md-6 col-xs-8 mx-auto">
-                <button
-                  type="button"
-                  onClick={() => {
-                    this.props.setOrder(order, total)
-                  }}
-                  className="btn btn-lg btn-success col-md-8 col-xs-8 mx-auto my-2"
-                >
-                  PROCEED TO CART
-                </button>
-              </Link>
-              {/* <Link to={'/'} className="col-md-6 col-xs-8 mx-auto">
+            <div className="total-bottom">
+              <div className="row shadow mx-auto mt-2 mb-2 pt-2 pb-2 pl-2 text-center border">
+                Your total is ${total}
+              </div>
+              {/* buttons */}
+              <div className="row mx-2">
+                <Link to={'/review'} className="col-md-6 col-xs-8 mx-auto">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      this.props.setOrder(order, total)
+                    }}
+                    className="btn btn-lg btn-success col-md-8 col-xs-8 mx-auto my-2"
+                  >
+                    PROCEED TO CART
+                  </button>
+                </Link>
+                {/* <Link to={'/'} className="col-md-6 col-xs-8 mx-auto">
                   <button type="button" className="btn btn-lg btn-danger  my-2">
                   GO BACK
                   </button>
                 </Link> */}
+              </div>
+              {/* buttons */}
             </div>
-            {/* buttons */}
           </div>
         </div>
       )

@@ -8,3 +8,16 @@
   border-color: gray;
   margin: auto 0.2em;
 }
+
+.total-bottom {
+  // position: absolute;
+  // left: 0;
+  // right: 0;
+  // bottom: 0;
+  z-index: 9999;
+}
+
+.menu {
+  max-height: 50vh;
+  overflow: scroll;
+}
