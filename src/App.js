@@ -68,7 +68,12 @@ class App extends React.Component {
                   <Route
                     path="/menu"
                     render={() => (
-                      <MenuPage menu={menu} setOrder={this.setOrder} />
+                      <MenuPage
+                        menu={menu}
+                        order={order}
+                        total={total}
+                        setOrder={this.setOrder}
+                      />
                     )}
                   />
                   <Route

@@ -19,6 +19,18 @@ class ShowSides extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const { item } = this.props
+    if (localStorage.getItem(item.name)) {
+      this.setState(
+        {
+          quantity: Number(localStorage.getItem(item.name)),
+        },
+        () => this.setState({ price: this.state.quantity * item.price })
+      )
+    }
+  }
+
   render() {
     const { item, addToOrder } = this.props
     const { quantity, price } = this.state
@@ -105,10 +117,11 @@ class ShowSides extends React.Component {
             <h5 className="mx-auto pt-2 pb-2">Sides for this dish</h5>
           ) : null}
           {item.sides
-            ? item.sides.map((item) => {
+            ? item.sides.map((item, idx) => {
                 return (
                   <ShowSides
                     item={item}
+                    key={idx}
                     updateTotal={this.props.updateTotal}
                     addToOrder={this.props.addToOrder}
                   />
@@ -150,6 +163,8 @@ export default class Home extends Component {
       .then(() => {
         this.setState({ isMenuLoaded: true, call: '' })
       })
+
+    this.setState({ order: this.props.order, total: this.props.total })
   }
 
   updateTotal = (val) => {
@@ -164,6 +179,9 @@ export default class Home extends Component {
       dishObj,
       qty,
     }
+
+    //save/update at local storage
+    localStorage.setItem(dishObj.name, qty)
 
     if (qty === 1 && add === 'add') {
       this.setState({ order: [...order, newEl] })
@@ -218,10 +236,11 @@ export default class Home extends Component {
                 <div className="container main-card border shadow-sm mt-4 pt-2">
                   <h4>Main Course</h4>
                   <hr />
-                  {menu.menuItems.mainCourse.map((item) => {
+                  {menu.menuItems.mainCourse.map((item, idx) => {
                     return (
                       <ShowSides
                         item={item}
+                        key={idx}
                         updateTotal={this.updateTotal}
                         addToOrder={this.addToOrder}
                       />
@@ -231,10 +250,11 @@ export default class Home extends Component {
                 <div className="container main-card border shadow-sm mt-4 pt-2">
                   <h4>Sides</h4>
                   <hr />
-                  {menu.menuItems.sides.map((item) => {
+                  {menu.menuItems.sides.map((item, idx) => {
                     return (
                       <ShowSides
                         item={item}
+                        key={idx}
                         updateTotal={this.updateTotal}
                         addToOrder={this.addToOrder}
                       />
@@ -244,10 +264,11 @@ export default class Home extends Component {
                 <div className="container main-card border shadow-sm mt-4 pt-2">
                   <h4>Beverages</h4>
                   <hr />
-                  {menu.menuItems.beverages.map((item) => {
+                  {menu.menuItems.beverages.map((item, idx) => {
                     return (
                       <ShowSides
                         item={item}
+                        key={idx}
                         updateTotal={this.updateTotal}
                         addToOrder={this.addToOrder}
                       />

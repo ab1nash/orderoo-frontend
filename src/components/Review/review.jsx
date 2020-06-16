@@ -74,7 +74,7 @@ export default class Review extends Component {
                   TOTAL
                 </div>
 
-                <div className="col-md-3 col-sm-3 col-xs-3 mt-4 mb-2 ">
+                <div className="col-md-3 col-sm-3 col-xs-3 mt-4 mb-2 font-weight-bold">
                   $ {total}
                 </div>
               </div>
@@ -86,6 +86,7 @@ export default class Review extends Component {
               <button
                 type="button"
                 className="btn btn-lg btn-success col-md-6 col-xs-8 mx-auto my-2"
+                onClick={() => localStorage.clear()}
               >
                 PROCEED
               </button>
