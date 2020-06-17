@@ -1,4 +1,5 @@
 const createPaymentIntent = (options) => {
+  // link to firebase function
   return window
     .fetch(`/create-payment-intent`, {
       method: 'POST',

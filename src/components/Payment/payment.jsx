@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import CheckoutForm from './CheckoutForm'
@@ -18,7 +18,7 @@ export default class Payment extends Component {
   }
   processPay() {
     console.log('proc pay')
-    // go to status page
+    return <Redirect to="/success" />
   }
   render() {
     const { name, email, total, order } = this.props
