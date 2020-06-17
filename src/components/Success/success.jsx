@@ -9,6 +9,9 @@ export default class Success extends Component {
       order: [],
     }
   }
+  componentDidUnmount() {
+    localStorage.clear()
+  }
   render() {
     return (
       <div className="home-container">

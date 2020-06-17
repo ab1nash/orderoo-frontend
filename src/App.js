@@ -23,6 +23,8 @@ class App extends React.Component {
       menu: [],
       order: [],
       total: 0,
+      name: '',
+      email: '',
     }
   }
 
@@ -58,8 +60,12 @@ class App extends React.Component {
     })
   }
 
+  saveCreds = (name, email) => {
+    this.setState({ name, email })
+  }
+
   render() {
-    const { table, menu, isMenuLoaded, order, total } = this.state
+    const { table, menu, isMenuLoaded, order, total, name, email } = this.state
     if (isMenuLoaded) {
       return (
         <Router>
@@ -88,13 +94,36 @@ class App extends React.Component {
                   />
                   <Route
                     path="/review"
-                    render={() => <Review order={order} total={total} />}
+                    render={() => (
+                      <Review
+                        order={order}
+                        total={total}
+                        saveCreds={this.saveCreds}
+                      />
+                    )}
                   />
                   <Route
                     path="/payment"
-                    render={() => <Payment total={total} />}
+                    render={() => (
+                      <Payment
+                        total={total}
+                        name={name}
+                        email={email}
+                        order={order}
+                      />
+                    )}
                   />
-                  <Route path="/success" render={() => <Success />} />
+                  <Route
+                    path="/success"
+                    render={() => (
+                      <Success
+                        total={total}
+                        name={name}
+                        email={email}
+                        order={order}
+                      />
+                    )}
+                  />
                   <Route render={() => <NotFound />} />
                 </Switch>
               </Suspense>

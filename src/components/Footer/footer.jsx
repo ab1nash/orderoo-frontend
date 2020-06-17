@@ -52,10 +52,6 @@ export default class Footer extends Component {
           <div className="col-12 mt-2 mb-2 ">
             Copyright &#169; 2020 <code>42abinash</code>
           </div>
-          <div className="col-md-12">
-            <i className="fa fa-heart fa-2x" style={{ color: 'red' }} />
-          </div>
-          <div className="col-md-12  small">Made with love in India</div>
         </div>
       </div>
     )

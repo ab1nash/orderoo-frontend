@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import './review.scss'
-
+import db from '../../firebase'
 class Element extends React.Component {
   // [order: backwards update]
   constructor(props) {
@@ -34,9 +34,17 @@ export default class Review extends Component {
     super(props)
     this.state = {
       order: [],
+      name: '',
+      email: '',
     }
   }
+
+  handleChange = (name) => (e) => {
+    e.preventDefault()
+    this.setState({ [name]: e.target.value })
+  }
   render() {
+    const { name, email } = this.state
     const { order, total } = this.props
     console.log(total)
     return (
@@ -65,13 +73,41 @@ export default class Review extends Component {
               </div>
             </div>
           </div>
+          <div className="item-row">
+            <div className="row px-2 py-2">Who is this order for?</div>
+            <form>
+              <input
+                type="text"
+                value={this.state.name}
+                onChange={this.handleChange('name')}
+                placeholder="Name"
+                className="mb-2 form-control"
+              />
+
+              <input
+                type="email"
+                value={this.state.email}
+                onChange={this.handleChange('email')}
+                placeholder="Email"
+                className="form-control"
+              />
+              <small>
+                <p className="text-justify mt-2">
+                  * Email is collected only for sending your bills. We will not
+                  store your email ID or give it away to pesky ad companies.
+                </p>
+              </small>
+            </form>
+          </div>
           {/* buttons */}
           <div className="row mx-2">
             <Link to={'/payment'} className="col-md-6 col-xs-8 mx-auto">
               <button
                 type="button"
                 className="btn btn-lg btn-success col-md-6 col-xs-8 mx-auto my-2"
-                onClick={() => localStorage.clear()}
+                onClick={() => {
+                  this.props.saveCreds(name, email)
+                }}
               >
                 PROCEED
               </button>
