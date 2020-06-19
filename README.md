@@ -66,3 +66,20 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+Firebase test fn
+
+```
+exports.testAdd = functions.firestore
+  .document('/Order/{id}')
+  .onCreate((snap, context) => {
+    const id = context.params.id
+    console.log(snap.data())
+    return snap.ref.set(
+      {
+        status: 'success',
+      },
+      { merge: true }
+    )
+  })
+```
