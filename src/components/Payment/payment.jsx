@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
+import history from '../../history'
 // import CheckoutForm from './CheckoutForm'
 import './payment.scss'
 import db from '../../firebase'
@@ -19,11 +20,51 @@ export default class Payment extends Component {
       cardName: '',
       cardNumber: '',
       cardCvc: '',
-      cardExpMo: '',
-      cardExpYear: '',
+      cardExpMo: '01',
+      cardExpYear: '2020',
+      txnId: uuid.v4(),
       processing: false,
+      disabled: false,
+      errMsg: '',
+      redirect: 'false',
     }
   }
+  componentDidMount() {
+    // change position
+    db.collection('Order').doc(this.state.txnId).set({
+      status: 'pending',
+    })
+    db.collection('Order')
+      .doc(this.state.txnId)
+      .onSnapshot(
+        (snap) => {
+          console.log(snap.data())
+          if (snap.data().status === 'success') {
+            console.log('this1')
+            this.processPay()
+          } else if (snap.data().status === 'failed') {
+            console.log('this2')
+            this.setState({
+              cardName: '',
+              cardNumber: '',
+              cardCvc: '',
+              cardExpMo: '',
+              cardExpYear: '',
+
+              processing: false,
+
+              errMsg: 'Payment failed. Please try again.',
+            })
+          } else {
+            console.log('this3')
+          }
+        },
+        (err) => {
+          console.log(`Encountered error: ${err}`)
+        }
+      )
+  }
+
   handleChange = (name) => (e) => {
     e.preventDefault()
     let setVal = e.target.value
@@ -34,14 +75,26 @@ export default class Payment extends Component {
     } else if (name === 'cardCvc') {
       setVal = e.target.value.slice(0, 3)
     } else if (name === 'cardNumber') {
-      setVal = e.target.value.slice(0, 22)
+      if (e.target.value.match(/^\d+$/)) {
+        setVal = e.target.value.slice(0, 22)
+      } else {
+        let temp = e.target.value
+        setVal = temp.slice(0, -1)
+      }
     }
     this.setState({ [name]: setVal })
   }
 
+  preHandleSubmit = (d) => {
+    this.setState({ txnId: uuid.v4() }, () => this.handleSubmit([d]))
+  }
+
   handleSubmit(details) {
+    const { txnId } = this.state
+
     const payload = {
       details,
+      txnId,
       card: {
         number: this.state.cardNumber,
         exp_month: Number(this.state.cardExpMo),
@@ -49,16 +102,33 @@ export default class Payment extends Component {
         cvc: this.state.cardCvc,
       },
     }
-    db.collection('Order').doc(uuid.v4()).set({
+    db.collection('Order').doc(txnId).set({
       payload,
       status: 'pending',
     })
+
     this.setState({ processing: true })
   }
 
   processPay() {
-    console.log('proc pay')
-    return <Redirect to="/success" />
+    console.log('proc pay successfully')
+    sessionStorage.clear()
+    this.props.setPaid()
+    history.push('/success')
+    // return <Redirect to="/success" />
+  }
+
+  allFilled() {
+    const { cardName, cardNumber, cardCvc, cardExpMo, cardExpYear } = this.state
+    if (
+      cardName === '' ||
+      cardNumber === '' ||
+      cardCvc === '' ||
+      cardExpMo === '' ||
+      cardExpYear === ''
+    ) {
+      return true
+    } else return false
   }
   render() {
     const { processing } = this.state
@@ -89,7 +159,7 @@ export default class Payment extends Component {
               <input
                 type="text"
                 // id="cardNumber"
-                placeholder="Name"
+                placeholder="Cardholder Name"
                 value={this.state.cardName}
                 className="form-control"
                 onChange={this.handleChange('cardName')}
@@ -101,7 +171,7 @@ export default class Payment extends Component {
               <input
                 // id="cardNumber"
                 type="text"
-                placeholder="1111222233334444"
+                placeholder="4444333322221111"
                 value={this.state.cardNumber}
                 className="form-control"
                 onChange={this.handleChange('cardNumber')}
@@ -142,10 +212,11 @@ export default class Payment extends Component {
               />
             </div>
           </div>
+          {this.state.errMsg}
           <button
             className="btn btn-lg btn-success col-md-4 col-xs-8 mx-auto my-2"
             onClick={() => this.handleSubmit(details)}
-            disabled={processing}
+            disabled={processing || this.allFilled()}
           >
             <b>{processing ? 'Processing…' : 'PAY'}</b>
           </button>

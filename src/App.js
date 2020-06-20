@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { Router, Switch, Route } from 'react-router-dom'
+import history from './history'
 import LoadingPage from './components/Loading'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
@@ -25,6 +26,7 @@ class App extends React.Component {
       total: 0,
       name: '',
       email: '',
+      paid: false,
     }
   }
 
@@ -45,19 +47,23 @@ class App extends React.Component {
         this.setState({ isMenuLoaded: true })
       })
 
-    if (localStorage.getItem('total')) {
-      this.setState({ total: Number(localStorage.getItem('total')) })
+    if (sessionStorage.getItem('total')) {
+      this.setState({ total: Number(sessionStorage.getItem('total')) })
     }
-    if (localStorage.getItem('order')) {
-      this.setState({ order: JSON.parse(localStorage.getItem('order')) })
+    if (sessionStorage.getItem('order')) {
+      this.setState({ order: JSON.parse(sessionStorage.getItem('order')) })
     }
   }
 
   setOrder = (order, total) => {
     this.setState({ order, total }, () => {
-      localStorage.setItem('order', JSON.stringify(order))
-      localStorage.setItem('total', total)
+      sessionStorage.setItem('order', JSON.stringify(order))
+      sessionStorage.setItem('total', total)
     })
+  }
+
+  setPaid = () => {
+    this.setState({ paid: true })
   }
 
   saveCreds = (name, email) => {
@@ -65,10 +71,19 @@ class App extends React.Component {
   }
 
   render() {
-    const { table, menu, isMenuLoaded, order, total, name, email } = this.state
+    const {
+      table,
+      menu,
+      isMenuLoaded,
+      order,
+      total,
+      name,
+      email,
+      paid,
+    } = this.state
     if (isMenuLoaded) {
       return (
-        <Router>
+        <Router history={history}>
           <div className="App">
             <NavBar />
             <div style={{ minHeight: '45vh' }}>
@@ -102,17 +117,32 @@ class App extends React.Component {
                       />
                     )}
                   />
-                  <Route
-                    path="/payment"
-                    render={() => (
-                      <Payment
-                        total={total}
-                        name={name}
-                        email={email}
-                        order={order}
-                      />
-                    )}
-                  />
+                  {!this.state.paid ? (
+                    <Route
+                      path="/payment"
+                      render={() => (
+                        <Payment
+                          total={total}
+                          name={name}
+                          email={email}
+                          order={order}
+                          setPaid={this.setPaid}
+                        />
+                      )}
+                    />
+                  ) : (
+                    <Route
+                      path="/payment"
+                      render={() => (
+                        <Success
+                          total={total}
+                          name={name}
+                          email={email}
+                          order={order}
+                        />
+                      )}
+                    />
+                  )}
                   <Route
                     path="/success"
                     render={() => (

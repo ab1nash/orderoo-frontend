@@ -9,8 +9,8 @@ export default class Success extends Component {
       order: [],
     }
   }
-  componentDidUnmount() {
-    localStorage.clear()
+  componentWillUnmount() {
+    sessionStorage.clear()
   }
   render() {
     return (

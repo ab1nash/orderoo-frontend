@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './not-found.scss'
+import history from '../../history'
 
 export default function NotFound() {
   return (
@@ -8,6 +9,10 @@ export default function NotFound() {
       <h3>Oops! You shouldn't be seeing this!</h3>
       <br />
       <Link to={'/'}>Click here to go back home</Link>
+      <br />
+      <button className="btn btn-primary" onClick={() => history.goBack()}>
+        GO TO LAST PAGE
+      </button>
     </div>
   )
 }

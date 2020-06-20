@@ -35,7 +35,8 @@ exports.stripeCharge = functions.firestore
       function (err, token) {
         // asynchronously called
         console.log('token success!!')
-
+        console.log(token)
+        console.log('/token/')
         const amount = val.payload.details.total
         const currency = 'nzd'
 

@@ -21,10 +21,10 @@ class ShowSides extends React.Component {
 
   componentDidMount() {
     const { item } = this.props
-    if (localStorage.getItem(item.name)) {
+    if (sessionStorage.getItem(item.name)) {
       this.setState(
         {
-          quantity: Number(localStorage.getItem(item.name)),
+          quantity: Number(sessionStorage.getItem(item.name)),
         },
         () => this.setState({ price: this.state.quantity * item.price })
       )
@@ -183,7 +183,7 @@ export default class Home extends Component {
     }
 
     //save/update at local storage
-    localStorage.setItem(dishObj.name, qty)
+    sessionStorage.setItem(dishObj.name, qty)
 
     if (qty === 1 && add === 'add') {
       this.setState({ order: [...order, newEl] })
@@ -292,6 +292,7 @@ export default class Home extends Component {
                       this.props.setOrder(order, total)
                     }}
                     className="btn btn-lg btn-success col-md-8 col-xs-8 mx-auto my-2"
+                    disabled={total === 0 ? true : false}
                   >
                     PROCEED TO CART
                   </button>
