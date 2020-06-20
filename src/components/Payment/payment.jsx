@@ -26,7 +26,7 @@ export default class Payment extends Component {
       processing: false,
       disabled: false,
       errMsg: '',
-      redirect: 'false',
+      redirect: false,
     }
   }
   componentDidMount() {
@@ -113,9 +113,9 @@ export default class Payment extends Component {
   processPay() {
     console.log('proc pay successfully')
     sessionStorage.clear()
-    this.props.setPaid()
-    history.push('/success')
-    // return <Redirect to="/success" />
+    // this.props.setPaid()
+    // history.push('/success')
+    this.setState({ redirect: true })
   }
 
   allFilled() {
@@ -134,106 +134,110 @@ export default class Payment extends Component {
     const { processing } = this.state
     const { name, email, total, order } = this.props
     const details = { name, email, total, order }
-    return (
-      <div className="home-container">
-        <div className="container mt-4 mb-2 welcome-text">
-          <h3 style={{ minHeight: '4em' }}>PAYMENT</h3>
-          <h1>
-            NZD{' '}
-            {total.toLocaleString(navigator.language, {
-              minimumFractionDigits: 2,
-            })}{' '}
-          </h1>
-          <h4>Pay via card</h4>
-          {/* <Elements stripe={stripePromise}>
+    if (this.state.redirect) {
+      return <Redirect to={'/success'} />
+    } else {
+      return (
+        <div className="home-container">
+          <div className="container mt-4 mb-2 welcome-text">
+            <h3 style={{ minHeight: '4em' }}>PAYMENT</h3>
+            <h1>
+              NZD{' '}
+              {total.toLocaleString(navigator.language, {
+                minimumFractionDigits: 2,
+              })}{' '}
+            </h1>
+            <h4>Pay via card</h4>
+            {/* <Elements stripe={stripePromise}>
             <CheckoutForm
-              name={name}
-              email={email}
-              total={total}
-              order={order}
+            name={name}
+            email={email}
+            total={total}
+            order={order}
             />
           </Elements> */}
-          {/* <form> */}
-          <div className="row my-2">
-            <div className="col ">
-              <input
-                type="text"
-                // id="cardNumber"
-                placeholder="Cardholder Name"
-                value={this.state.cardName}
-                className="form-control"
-                onChange={this.handleChange('cardName')}
-              />
+            {/* <form> */}
+            <div className="row my-2">
+              <div className="col ">
+                <input
+                  type="text"
+                  // id="cardNumber"
+                  placeholder="Cardholder Name"
+                  value={this.state.cardName}
+                  className="form-control"
+                  onChange={this.handleChange('cardName')}
+                />
+              </div>
             </div>
-          </div>
-          <div className="row my-2">
-            <div className="col ">
-              <input
-                // id="cardNumber"
-                type="text"
-                placeholder="4444333322221111"
-                value={this.state.cardNumber}
-                className="form-control"
-                onChange={this.handleChange('cardNumber')}
-              />
+            <div className="row my-2">
+              <div className="col ">
+                <input
+                  // id="cardNumber"
+                  type="text"
+                  placeholder="4444333322221111"
+                  value={this.state.cardNumber}
+                  className="form-control"
+                  onChange={this.handleChange('cardNumber')}
+                />
+              </div>
             </div>
-          </div>
-          <div className="row my-2">
-            <div className="col">
-              <input
-                type="number"
-                // id="cardExpMo"
-                placeholder="MM"
-                className="form-control"
-                value={this.state.cardExpMo}
-                onChange={this.handleChange('cardExpMo')}
-                max="12"
-              />
+            <div className="row my-2">
+              <div className="col">
+                <input
+                  type="number"
+                  // id="cardExpMo"
+                  placeholder="MM"
+                  className="form-control"
+                  value={this.state.cardExpMo}
+                  onChange={this.handleChange('cardExpMo')}
+                  max="12"
+                />
+              </div>
+              <div className="col">
+                <input
+                  type="number"
+                  // id="cardExpYear"
+                  placeholder="YYYY"
+                  className="form-control"
+                  value={this.state.cardExpYear}
+                  onChange={this.handleChange('cardExpYear')}
+                  max="2100"
+                />
+              </div>
+              <div className="col">
+                <input
+                  type="password"
+                  // id="cardCvc"
+                  placeholder="***"
+                  className="form-control"
+                  value={this.state.cardCvc}
+                  onChange={this.handleChange('cardCvc')}
+                />
+              </div>
             </div>
-            <div className="col">
-              <input
-                type="number"
-                // id="cardExpYear"
-                placeholder="YYYY"
-                className="form-control"
-                value={this.state.cardExpYear}
-                onChange={this.handleChange('cardExpYear')}
-                max="2100"
-              />
-            </div>
-            <div className="col">
-              <input
-                type="password"
-                // id="cardCvc"
-                placeholder="***"
-                className="form-control"
-                value={this.state.cardCvc}
-                onChange={this.handleChange('cardCvc')}
-              />
-            </div>
-          </div>
-          {this.state.errMsg}
-          <button
-            className="btn btn-lg btn-success col-md-4 col-xs-8 mx-auto my-2"
-            onClick={() => this.handleSubmit(details)}
-            disabled={processing || this.allFilled()}
-          >
-            <b>{processing ? 'Processing…' : 'PAY'}</b>
-          </button>
-          {/* </form> */}
-          {/* buttons */}
-          <div className="row mx-2">
+            {this.state.errMsg}
             <button
-              type="button"
-              className="btn btn-lg btn-outline-danger col-md-4 col-xs-8 mx-auto my-2"
-              onClick={() => this.processPay()}
+              className="btn btn-lg btn-success col-md-4 col-xs-8 mx-auto my-2"
+              onClick={() => this.handleSubmit(details)}
+              disabled={processing || this.allFilled()}
             >
-              PAY AT THE RESTAURANT
+              <b>{processing ? 'Processing…' : 'PAY'}</b>
             </button>
+            {/* </form> */}
+            {/* buttons */}
+            <div className="row mx-2">
+              <button
+                type="button"
+                className="btn btn-lg btn-outline-danger col-md-4 col-xs-8 mx-auto my-2"
+                onClick={() => this.processPay()}
+              >
+                PAY AT THE RESTAURANT
+              </button>
+            </div>
+            {/* buttons */}
           </div>
-          {/* buttons */}
         </div>
-      </div>
-    )
+      )
+    }
   }
 }

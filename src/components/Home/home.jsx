@@ -10,7 +10,7 @@ export default class Home extends Component {
     }
   }
   render() {
-    const { table } = this.props
+    const { table, isMenuLoaded } = this.props
     return (
       <div className="home-container">
         <div className="container mt-4 mb-2 welcome-text">

@@ -10,9 +10,6 @@ export default function NotFound() {
       <br />
       <Link to={'/'}>Click here to go back home</Link>
       <br />
-      <button className="btn btn-primary" onClick={() => history.goBack()}>
-        GO TO LAST PAGE
-      </button>
     </div>
   )
 }
