@@ -27,6 +27,7 @@ export default class Payment extends React.Component {
   componentDidMount() {
     db.collection('Order').doc(this.state.txnId).set({
       status: 'pending',
+      token: '',
     })
 
     db.collection('Order')
