@@ -20,8 +20,8 @@ const stripe = require('stripe')(functions.config().stripe.token)
 //   })
 
 exports.stripeCharge = functions.firestore
-  .document('Order/{id}/{token}')
-  .onUpdate(async (snap, context) => {
+  .document('Order/{id}')
+  .onCreate(async (snap, context) => {
     const val = snap.data()
     const amount = val.amount
     const currency = 'nzd'
