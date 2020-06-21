@@ -36,11 +36,11 @@ class ShowSides extends React.Component {
     const { quantity, price } = this.state
     return (
       <div className="item-row">
-        <div className="row mb-2 ">
+        <div className="row  ">
           <div className="col-9">
             <div className="row">
-              <div className="col-5  mt-4 mb-2">{item.name}</div>
-              <div className="col-4  mt-4 mb-2">$ {item.price}</div>
+              <div className="col-5  mt-1 mb-1">{item.name}</div>
+              <div className="col-4  mt-1 mb-1">$ {item.price}</div>
             </div>
             <br />
             <div className="row mx-auto">{item.description}</div>
@@ -57,14 +57,14 @@ class ShowSides extends React.Component {
         </div>
         <div className="input-group mb-3">
           <div className="input-group-prepend">
-            <span className="input-group-text">$</span>
+            <span className="input-group-text ">$</span>
             <span className="input-group-text" style={{ minWidth: '6rem' }}>
               {price}
             </span>
           </div>
           <div className="input-group-append" id="button-addon4">
             <button
-              className="btn btn-outline-secondary"
+              className="btn btn-sm btn-outline-secondary"
               type="button"
               onClick={() => {
                 this.setState(
@@ -88,7 +88,7 @@ class ShowSides extends React.Component {
               {quantity}
             </span>
             <button
-              className="btn btn-outline-secondary"
+              className="btn btn-sm btn-outline-secondary"
               type="button"
               onClick={() => {
                 this.setState(
@@ -215,7 +215,7 @@ export default class Home extends Component {
       return (
         <div className="home-container">
           <div className="container mt-4 mb-2 welcome-text ">
-            <h3 style={{ minHeight: '1.5em' }}>MENU</h3>
+            <h3 style={{ minHeight: '1.3em' }}>MENU</h3>
             {/* menu */}
             <div className="menu mt-2 mb-2 border-top">
               <div className="menu-description text-justify">
