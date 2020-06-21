@@ -11,9 +11,10 @@ import './App.scss'
 const Home = lazy(() => import('./components/Home'))
 const MenuPage = lazy(() => import('./components/MenuPage'))
 const Review = lazy(() => import('./components/Review'))
-const Payment = lazy(() => import('./components/Payment'))
+const Payment = lazy(() => import('./components/Payment2'))
 const Success = lazy(() => import('./components/Success'))
 const NotFound = lazy(() => import('./components/NotFound'))
+const AboutUs = lazy(() => import('./components/AboutUs'))
 
 class App extends React.Component {
   constructor(props) {
@@ -125,6 +126,7 @@ class App extends React.Component {
                       />
                     )}
                   />
+                  <Route path="/about-us" render={() => <AboutUs />} />
                   <Route render={() => <NotFound />} />
                 </Switch>
               </Suspense>

@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 const Navbar = () => {
   return (
     <>
-      <div className=" mr-auto sticky-top shadow">
+      <div className=" mr-auto  shadow">
         <Navbars
           bg="white"
           expand="lg"
@@ -44,7 +44,7 @@ const Navbar = () => {
                 <Nav.Link action="true" href="/">
                   Home
                 </Nav.Link>
-                <Nav.Link action="true" href="/aboutus">
+                <Nav.Link action="true" href="/about-us">
                   About Us
                 </Nav.Link>
                 <Nav.Link action="true" href="/contactus">

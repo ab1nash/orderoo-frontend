@@ -37,29 +37,28 @@ class ShowSides extends React.Component {
     return (
       <div className="item-row">
         <div className="row mb-2 ">
-          <div className="col-8">
+          <div className="col-9">
             <div className="row">
-              <div className="col-md-6 col-sm-6 col-xs-4 mt-4 mb-2">
-                {item.name}
-              </div>
-              <div className="col-md-2 col-sm-2 col-xs-4 mt-4 mb-2">
-                $ {item.price}
-              </div>
+              <div className="col-5  mt-4 mb-2">{item.name}</div>
+              <div className="col-4  mt-4 mb-2">$ {item.price}</div>
             </div>
             <br />
             <div className="row mx-auto">{item.description}</div>
           </div>
-          <div className="col-md-2 ml-2" style={{ minHeight: '200px' }}>
-            <img
-              src="https://img.icons8.com/bubbles/2x/food.png"
-              alt="foodimg"
-            />
-          </div>
+          {this.props.noImg ? null : (
+            <div className="col-3 ">
+              <img
+                src="https://img.icons8.com/bubbles/2x/food.png"
+                alt="foodimg"
+                style={{ height: '100px' }}
+              />
+            </div>
+          )}
         </div>
         <div className="input-group mb-3">
           <div className="input-group-prepend">
             <span className="input-group-text">$</span>
-            <span className="input-group-text" style={{ minWidth: '9rem' }}>
+            <span className="input-group-text" style={{ minWidth: '6rem' }}>
               {price}
             </span>
           </div>
@@ -124,6 +123,7 @@ class ShowSides extends React.Component {
                     key={idx}
                     updateTotal={this.props.updateTotal}
                     addToOrder={this.props.addToOrder}
+                    noImg={true}
                   />
                 )
               })
@@ -230,6 +230,7 @@ export default class Home extends Component {
                         key={idx}
                         updateTotal={this.updateTotal}
                         addToOrder={this.addToOrder}
+                        noImg={false}
                       />
                     )
                   })}
@@ -244,6 +245,7 @@ export default class Home extends Component {
                         key={idx}
                         updateTotal={this.updateTotal}
                         addToOrder={this.addToOrder}
+                        noImg={false}
                       />
                     )
                   })}
@@ -258,6 +260,7 @@ export default class Home extends Component {
                         key={idx}
                         updateTotal={this.updateTotal}
                         addToOrder={this.addToOrder}
+                        noImg={false}
                       />
                     )
                   })}
@@ -272,6 +275,7 @@ export default class Home extends Component {
                         key={idx}
                         updateTotal={this.updateTotal}
                         addToOrder={this.addToOrder}
+                        noImg={false}
                       />
                     )
                   })}

@@ -26,11 +26,11 @@ export default class Home extends Component {
                 ORDER NOW
               </button>
             </Link>
-            <Link to={'#'} className="col-md-6 col-xs-8 mx-auto">
+            {/* <Link to={'#'} className="col-md-6 col-xs-8 mx-auto">
               <button type="button" className="btn btn-lg btn-danger   my-2">
                 CANCEL
               </button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

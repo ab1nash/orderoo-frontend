@@ -23,55 +23,39 @@ exports.stripeCharge = functions.firestore
   .document('Order/{id}')
   .onCreate(async (snap, context) => {
     const val = snap.data()
-    const card = val.payload.card
-    // console.log('card success!!')
-    // console.log(card)
-    // console.log('card success!!')
+    const amount = val.amount
+    const currency = 'nzd'
+    const token = val.token
+    // Charge card
+    stripe.charges
+      .create({
+        amount,
+        currency,
+        description: 'test pay',
+        source: token,
+      })
+      .then((charge) => {
+        console.log('PAID SUCCESSFULLY')
+        return snap.ref.set(
+          {
+            status: 'success',
+          },
+          { merge: true }
+        )
+      })
+      .catch((err) => {
+        console.log('ERROR')
+        console.log(err)
+        console.log('/ERROR/')
 
-    stripe.tokens.create(
-      {
-        card,
-      },
-      function (err, token) {
-        // asynchronously called
-        console.log('token success!!')
-        console.log(token)
-        console.log('/token/')
-        const amount = val.payload.details.total
-        const currency = 'nzd'
-
-        // Charge card
-        stripe.charges
-          .create({
-            amount,
-            currency,
-            description: 'Firebase Example',
-            source: token,
-          })
-          .then((charge) => {
-            console.log('SUCCEEEDEDDD')
-            return snap.ref.set(
-              {
-                status: 'success',
-              },
-              { merge: true }
-            )
-          })
-          .catch((err) => {
-            console.log('ERROR')
-            console.log(err)
-            console.log('/ERROR/')
-
-            console.log('FAILESADSAD!')
-            return snap.ref.set(
-              {
-                status: 'failed',
-              },
-              { merge: true }
-            )
-          })
-      }
-    )
+        console.log('PAYMENT FAILED')
+        return snap.ref.set(
+          {
+            status: 'failed',
+          },
+          { merge: true }
+        )
+      })
   })
 
 function charge(req, res) {

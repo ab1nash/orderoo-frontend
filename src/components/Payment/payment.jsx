@@ -10,8 +10,13 @@ import db from '../../firebase'
 const uuid = require('uuid')
 
 // const stripePromise = api.getPublicStripeKey().then((key) => loadStripe(key))
-const stripePromise = loadStripe('pk_test_JJ1eMdKN0Hp4UFJ6kWXWO4ix00jtXzq5XG')
-
+var stripe = require('stripe')(
+  'sk_test_51GupLcI8jmMhFMUso6EjfZgQpN93jIe4Fwe9dcIm4judzjJhonob8ZqOOwpOpcYvAHv4urur8tCkWxrA3AezlHZH007KIh1RFH'
+)
+// stripe.setOptions({
+//   publishableKey:
+//     'pk_test_51GupLcI8jmMhFMUsAzTdXX3nlQHUVrxSh9leoCMnAVQ9S9OEotWkxCUmJyvE0f8Vaamic4tu6nKBu5deYONgtuB100kZOCP3G2',
+// })
 export default class Payment extends Component {
   constructor(props) {
     super(props)
@@ -95,19 +100,32 @@ export default class Payment extends Component {
     const payload = {
       details,
       txnId,
-      card: {
-        number: this.state.cardNumber,
-        exp_month: Number(this.state.cardExpMo),
-        exp_year: Number(this.state.cardExpYear),
-        cvc: this.state.cardCvc,
-      },
     }
+
     db.collection('Order').doc(txnId).set({
       payload,
       status: 'pending',
     })
 
-    this.setState({ processing: true })
+    this.setState({ processing: true }, () =>
+      stripe.tokens.create(
+        {
+          card: {
+            number: this.state.cardNumber,
+            exp_month: Number(this.state.cardExpMo),
+            exp_year: Number(this.state.cardExpYear),
+            cvc: this.state.cardCvc,
+          },
+        },
+        function (err, token) {
+          db.collection('Order').doc(txnId).set({
+            token,
+          })
+          console.log(token)
+          console.log(err)
+        }
+      )
+    )
   }
 
   processPay() {
