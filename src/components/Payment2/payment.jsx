@@ -17,42 +17,51 @@ export default class Payment extends React.Component {
     super(props)
     this.state = {
       name: '',
+      count: 0,
       // token: {},
       txnId: uuid.v4(),
       processing: false,
       redirect: false,
       paid: false,
+      watch: false,
+      err: '',
     }
   }
-  componentDidMount() {
-    db.collection('Order').doc(this.state.txnId).set({
-      status: 'pending',
-      token: '',
-    })
-
-    db.collection('Order')
-      .doc(this.state.txnId)
-      .onSnapshot(
-        (snap) => {
-          console.log(snap.data())
-          if (snap.data().status === 'success') {
-            console.log('this1')
-            this.setState({ paid: true }, () => this.processPay())
-          } else if (snap.data().status === 'failed') {
-            console.log('this2')
-            this.setState({ paid: false, processing: false })
-          } else {
-            console.log('this3')
+  componentDidUpdate() {
+    if (this.state.watch && this.state.count === 1) {
+      db.collection('Order')
+        .doc(this.state.txnId)
+        .onSnapshot(
+          (snap) => {
+            console.log(snap.data())
+            if (snap.data().status === 'success') {
+              console.log('this1')
+              this.setState({ paid: true }, () => this.processPay())
+              this.setState({ count: 0 })
+            } else if (snap.data().status === 'failed') {
+              console.log('this2')
+              this.setState({
+                paid: false,
+                processing: false,
+                txnId: uuid.v4(),
+                err: 'Payment failed. Please try again',
+              })
+              this.setState({ count: 0 })
+            } else {
+              console.log('this3')
+              this.setState({ count: 0 })
+            }
+          },
+          (err) => {
+            console.log(`Encountered error: ${err}`)
           }
-        },
-        (err) => {
-          console.log(`Encountered error: ${err}`)
-        }
-      )
+        )
+    }
   }
   setToken = (token) => {
-    this.setState({ token, processing: true }, () => {
-      db.collection('Order').doc(this.state.txnId).update({
+    this.setState({ token, processing: true, watch: true, count: 1 }, () => {
+      db.collection('Order').doc(this.state.txnId).set({
+        status: 'pending',
         token: token.id,
         amount: this.props.total,
         name: this.props.name,
@@ -100,7 +109,7 @@ export default class Payment extends React.Component {
               processing={processing}
             />
           </Elements>
-
+          <div style={{ color: 'red' }}>{this.state.err}</div>
           <button
             type="button"
             className="btn btn btn-outline-danger  mx-auto my-2"
