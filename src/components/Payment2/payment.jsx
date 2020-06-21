@@ -54,6 +54,8 @@ export default class Payment extends React.Component {
       db.collection('Order').doc(this.state.txnId).update({
         token: token.id,
         amount: this.props.total,
+        name: this.props.name,
+        email: this.props.email,
       })
     })
   }
