@@ -1,21 +1,18 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import './review.scss'
-import db from '../../firebase'
+// import db from '../../firebase'
 class Element extends React.Component {
   // [order: backwards update]
   constructor(props) {
     super(props)
-    this.state = {
-      // price: 0,
-      // quantity: 0,
-    }
+    this.state = {}
   }
 
   render() {
     const { item } = this.props
     const { dishObj, qty } = item
-    // const { quantity, price } = this.state
+
     return (
       <div className="item-row">
         <div className="row mb-2 ">
@@ -36,17 +33,31 @@ export default class Review extends Component {
       order: [],
       name: '',
       email: '',
+      target: '#',
+      err: '',
     }
   }
-
+  validateEmail(email) {
+    var re = /\S+@\S+\.\S+/
+    return re.test(email)
+  }
   handleChange = (name) => (e) => {
     e.preventDefault()
+    if (this.state.name.length > 3 && this.validateEmail(this.state.email)) {
+      this.setState({ target: '/payment', err: '' })
+    } else {
+      this.setState({
+        target: '#',
+        err: '* Please fill both name and email address properly',
+      })
+    }
+
     this.setState({ [name]: e.target.value })
   }
   render() {
-    const { name, email } = this.state
+    const { name, email, target } = this.state
     const { order, total } = this.props
-    console.log(total)
+
     return (
       <div className="review-container">
         <div className="container mt-4 mb-2 welcome-text">
@@ -91,6 +102,7 @@ export default class Review extends Component {
                 placeholder="Email"
                 className="form-control"
               />
+              <div style={{ color: 'red' }}>{this.state.err}</div>
               <small>
                 <p className="text-justify mt-2">
                   * Email is collected only for sending your bills. We will not
@@ -101,7 +113,7 @@ export default class Review extends Component {
           </div>
           {/* buttons */}
           <div className="row mx-2">
-            <Link to={'/payment'} className="col-md-6 col-xs-8 mx-auto">
+            <Link to={target} className="col-md-6 col-xs-8 mx-auto">
               <button
                 type="button"
                 className="btn btn-lg btn-success col-md-6 col-xs-8 mx-auto my-2"

@@ -10,9 +10,9 @@ export default class Home extends Component {
     }
   }
   render() {
-    const { table, isMenuLoaded } = this.props
+    const { table } = this.props
     return (
-      <div className="home-container">
+      <div className="home-container" style={{ paddingBottom: '20vh' }}>
         <div className="container mt-4 mb-2 welcome-text">
           <h3 style={{ minHeight: '4em' }}>
             Welcome User! <br />

@@ -66,6 +66,7 @@ export default class Payment extends React.Component {
         amount: this.props.total,
         name: this.props.name,
         email: this.props.email,
+        order: this.props.order,
       })
     })
   }
@@ -75,10 +76,8 @@ export default class Payment extends React.Component {
   }
 
   processPay() {
-    console.log('proc pay successfully')
     sessionStorage.clear()
     // this.props.setPaid()
-    // history.push('/success')
     this.setState({ redirect: true })
   }
 
@@ -89,9 +88,9 @@ export default class Payment extends React.Component {
       return <Redirect to={'/success'} />
     } else {
       return (
-        <div className="container">
+        <div className="container" style={{ paddingBottom: '30vh' }}>
           <div className="container mt-4 mb-2 welcome-text">
-            <h3 style={{ minHeight: '4em' }}>PAYMENT</h3>
+            <h3 style={{ minHeight: '2em' }}>PAYMENT</h3>
             <h1>
               NZD{' '}
               {total.toLocaleString(navigator.language, {
@@ -112,7 +111,7 @@ export default class Payment extends React.Component {
           <div style={{ color: 'red' }}>{this.state.err}</div>
           <button
             type="button"
-            className="btn btn btn-outline-danger  mx-auto my-2"
+            className="btn btn btn-outline-danger mx-auto my-2"
             onClick={() => this.processPay()}
           >
             Pay at the Restaurant

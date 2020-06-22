@@ -6,9 +6,6 @@ import './menu-page.scss'
 import LoadingPage from '../Loading'
 import db from '../../firebase'
 
-import addCircle from '../../content-constants/add_circle_grey_144x144.png'
-import subCircle from '../../content-constants/remove_circle_grey_144x144.png'
-
 class ShowSides extends React.Component {
   // [order: backwards update]
   constructor(props) {
@@ -73,7 +70,6 @@ class ShowSides extends React.Component {
                     quantity: !quantity ? 0 : quantity - 1,
                   },
                   () => {
-                    console.log(quantity)
                     if (quantity >= 1) this.props.updateTotal(-item.price)
                     // something to remove order from order list
                     addToOrder(item, quantity - 1, 'remove')
@@ -97,7 +93,6 @@ class ShowSides extends React.Component {
                     quantity: quantity + 1,
                   },
                   () => {
-                    console.log(quantity)
                     if (quantity >= 0) this.props.updateTotal(item.price)
                     addToOrder(item, quantity + 1)
                   }
@@ -144,8 +139,6 @@ export default class Home extends Component {
       call: 'Menu',
       // menu: [],
     }
-    const updateTotal = this.updateTotal.bind(this)
-    const addToOrder = this.addToOrder.bind(this)
   }
 
   componentDidMount() {
@@ -194,17 +187,14 @@ export default class Home extends Component {
         }),
       })
     } else {
-      this.setState(
-        {
-          order: this.state.order.map((order) => {
-            if (order.dishObj.id === newEl.dishObj.id) {
-              order.qty = qty
-            }
-            return order
-          }),
-        },
-        () => console.log(this.state.order)
-      )
+      this.setState({
+        order: this.state.order.map((order) => {
+          if (order.dishObj.id === newEl.dishObj.id) {
+            order.qty = qty
+          }
+          return order
+        }),
+      })
     }
   }
 

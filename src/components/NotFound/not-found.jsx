@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import './not-found.scss'
-import history from '../../history'
+// import history from '../../history'
 
 export default function NotFound() {
   return (

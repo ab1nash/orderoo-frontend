@@ -35,7 +35,7 @@ exports.stripeCharge = functions.firestore
         source: token,
       })
       .then((charge) => {
-        console.log('PAID SUCCESSFULLY')
+        console.log('PAYMENT SUCCESSFUL')
         return snap.ref.set(
           {
             status: 'success',
@@ -46,7 +46,7 @@ exports.stripeCharge = functions.firestore
       .catch((err) => {
         console.log('ERROR')
         console.log(err)
-        console.log('/ERROR/')
+        console.log('/ERROR')
 
         console.log('PAYMENT FAILED')
         return snap.ref.set(

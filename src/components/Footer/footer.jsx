@@ -39,7 +39,14 @@ export default class Footer extends Component {
 
         <div className="row second text-center">
           <div className="col-12 mt-2 mb-2 ">
-            Copyright &#169; 2020 <code>42abinash</code>
+            Copyright &#169; 2020{' '}
+            <a
+              href="https://ab1nash.github.io"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <code style={{ color: '#FF6403' }}>42abinash</code>
+            </a>
           </div>
         </div>
       </div>

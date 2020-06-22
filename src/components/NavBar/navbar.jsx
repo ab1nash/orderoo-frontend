@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 const Navbar = () => {
   return (
     <>
-      <div className=" mr-auto  shadow">
+      <div className=" mr-auto shadow">
         <Navbars
           bg="white"
           expand="lg"
@@ -29,14 +29,14 @@ const Navbar = () => {
             </Navbars.Brand>
 
             <Navbars.Brand action="true" href="/">
-              <div className="container">
-                <img
-                  src={logo}
-                  height="72px"
-                  className="mb-0 logo-main"
-                  alt="foodapp"
-                />
-              </div>
+              {/* <div className="container"> */}
+              <img
+                src={logo}
+                height="56px"
+                className="mb-0 logo-main"
+                alt="foodapp"
+              />
+              {/* </div> */}
             </Navbars.Brand>
             <Navbars.Toggle aria-controls="basic-navbar-nav" />
             <Navbars.Collapse id="basic-navbar-nav">

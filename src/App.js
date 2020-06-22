@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import history from './history'
+// import history from './history'
 import LoadingPage from './components/Loading'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
@@ -63,7 +63,10 @@ class App extends React.Component {
   }
 
   saveCreds = (name, email) => {
-    this.setState({ name, email })
+    this.setState({ name, email }, () => {
+      sessionStorage.setItem('name', name)
+      sessionStorage.setItem('email', email)
+    })
   }
 
   render() {
