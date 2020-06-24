@@ -41,18 +41,44 @@ export default class Review extends Component {
     var re = /\S+@\S+\.\S+/
     return re.test(email)
   }
+  changeError() {
+    if (this.state.name.length < 3 || !this.validateEmail(this.state.email)) {
+      this.setState({ err: '* Please fill both the fields to continue' })
+    }
+  }
   handleChange = (name) => (e) => {
     e.preventDefault()
+    this.setState({ [name]: e.target.value })
+
     if (this.state.name.length > 3 && this.validateEmail(this.state.email)) {
       this.setState({ target: '/payment', err: '' })
     } else {
-      this.setState({
-        target: '#',
-        err: '* Please fill both name and email address properly',
-      })
+      if (name === 'name') {
+        if (this.state.name.length < 3) {
+          this.setState({
+            target: '#',
+            err: '* The name must be greater than three characters long',
+          })
+        } else {
+          this.setState({
+            target: '#',
+            err: '',
+          })
+        }
+      } else if (name === 'email') {
+        if (!this.validateEmail(this.state.email)) {
+          this.setState({
+            target: '#',
+            err: '* Please enter the email as follows- example@example.com',
+          })
+        } else {
+          this.setState({
+            target: '#',
+            err: '',
+          })
+        }
+      }
     }
-
-    this.setState({ [name]: e.target.value })
   }
   render() {
     const { name, email, target } = this.state
@@ -119,6 +145,7 @@ export default class Review extends Component {
                 className="btn btn-lg btn-success col-md-6 col-xs-8 mx-auto my-2"
                 onClick={() => {
                   this.props.saveCreds(name, email)
+                  this.changeError()
                 }}
               >
                 PROCEED
@@ -128,6 +155,7 @@ export default class Review extends Component {
               <button
                 type="button"
                 className="btn btn-lg btn-danger col-md-6 col-xs-8 mx-auto  my-2"
+                // onclick={window.history.back()}
               >
                 {/* todo: save state! */}
                 MODIFY ORDER

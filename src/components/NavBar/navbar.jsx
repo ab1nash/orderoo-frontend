@@ -32,8 +32,8 @@ const Navbar = () => {
               {/* <div className="container"> */}
               <img
                 src={logo}
-                height="56px"
-                className="mb-0 logo-main"
+                height="36px"
+                className=" logo-main"
                 alt="foodapp"
               />
               {/* </div> */}
