@@ -43,7 +43,10 @@ export default class Review extends Component {
   }
   changeError() {
     if (this.state.name.length < 3 || !this.validateEmail(this.state.email)) {
-      this.setState({ err: '* Please fill both the fields to continue' })
+      this.setState({
+        err:
+          '* Please fill both the fields to continue. The name must be greater than 3 characters long and email must be in a proper format as follows: example@example.com',
+      })
     }
   }
   handleChange = (name) => (e) => {

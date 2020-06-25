@@ -18,10 +18,10 @@ class ShowSides extends React.Component {
 
   componentDidMount() {
     const { item } = this.props
-    if (sessionStorage.getItem(item.name)) {
+    if (sessionStorage.getItem(item.id)) {
       this.setState(
         {
-          quantity: Number(sessionStorage.getItem(item.name)),
+          quantity: Number(sessionStorage.getItem(item.id)),
         },
         () => this.setState({ price: this.state.quantity * item.price })
       )
@@ -176,25 +176,36 @@ export default class Home extends Component {
     }
 
     //save/update at local storage
-    sessionStorage.setItem(dishObj.name, qty)
+    if (qty > 0) sessionStorage.setItem(dishObj.id, qty)
+    else if (qty === 0) {
+      sessionStorage.setItem(dishObj.id, 0)
+    }
 
     if (qty === 1 && add === 'add') {
-      this.setState({ order: [...order, newEl] })
+      this.setState({ order: [...order, newEl] }, () =>
+        this.props.setOrder(this.state.order, this.state.total)
+      )
     } else if (qty === 0 && add === 'remove') {
-      this.setState({
-        order: this.state.order.filter((order) => {
-          return order.dishObj.id !== newEl.dishObj.id
-        }),
-      })
+      this.setState(
+        {
+          order: this.state.order.filter((order) => {
+            return order.dishObj.id !== newEl.dishObj.id
+          }),
+        },
+        () => this.props.setOrder(this.state.order, this.state.total)
+      )
     } else {
-      this.setState({
-        order: this.state.order.map((order) => {
-          if (order.dishObj.id === newEl.dishObj.id) {
-            order.qty = qty
-          }
-          return order
-        }),
-      })
+      this.setState(
+        {
+          order: this.state.order.map((order) => {
+            if (order.dishObj.id === newEl.dishObj.id) {
+              order.qty = qty
+            }
+            return order
+          }),
+        },
+        () => this.props.setOrder(this.state.order, this.state.total)
+      )
     }
   }
 
