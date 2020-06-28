@@ -155,18 +155,18 @@ export default class Home extends Component {
   componentDidMount() {
     //[TOFIX after testing] Calling it here is causing useless reads at every change.
     // a hack for now is to set a state
-
-    db.collection(this.state.call)
-      .doc('1234')
-      .get()
-      .then((doc) => {
-        this.setState({
-          menu: doc.data(),
+    if (this.state.call === 'Menu')
+      db.collection(this.state.call)
+        .doc('1234')
+        .get()
+        .then((doc) => {
+          this.setState({
+            menu: doc.data(),
+          })
         })
-      })
-      .then(() => {
-        this.setState({ isMenuLoaded: true, call: '' })
-      })
+        .then(() => {
+          this.setState({ isMenuLoaded: true, call: '' })
+        })
 
     // do this on reload ?
 

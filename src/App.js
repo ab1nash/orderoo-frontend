@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import LoadingPage from './components/Loading'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
-import db from './firebase'
+// import db from './firebase'
 
 import './App.scss'
 
@@ -31,24 +31,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.state.isMenuLoaded) {
-      db.collection('access_test')
-        .get()
-        .then((snapShots) => {
-          this.setState({
-            menu: snapShots.docs.map((doc) => {
-              return {
-                id: doc.id,
-                item: doc.data().item,
-              }
-            }),
-          })
-        })
-        .then(() => {
-          this.setState({ isMenuLoaded: true })
-          console.log('read from db')
-        })
-    }
     if (sessionStorage.getItem('total')) {
       this.setState({ total: Number(sessionStorage.getItem('total')) })
     }
@@ -73,76 +55,73 @@ class App extends React.Component {
 
   render() {
     const { table, menu, isMenuLoaded, order, total, name, email } = this.state
-    if (isMenuLoaded) {
-      return (
-        <Router>
-          <div className="App">
-            <NavBar />
-            <div style={{ minHeight: '45vh' }}>
-              <Suspense fallback={<LoadingPage />}>
-                <Switch>
-                  <Route
-                    exact
-                    path="/"
-                    render={() => (
-                      <Home table={table} isMenuLoaded={isMenuLoaded} />
-                    )}
-                  />
-                  <Route
-                    path="/menu"
-                    render={() => (
-                      <MenuPage
-                        menu={menu}
-                        order={order}
-                        total={total}
-                        setOrder={this.setOrder}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/review"
-                    render={() => (
-                      <Review
-                        order={order}
-                        total={total}
-                        saveCreds={this.saveCreds}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/payment"
-                    render={() => (
-                      <Payment
-                        total={total}
-                        name={name}
-                        email={email}
-                        order={order}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/success"
-                    render={() => (
-                      <Success
-                        total={total}
-                        name={name}
-                        email={email}
-                        order={order}
-                      />
-                    )}
-                  />
-                  <Route path="/about-us" render={() => <AboutUs />} />
-                  <Route render={() => <NotFound />} />
-                </Switch>
-              </Suspense>
-            </div>
-            <Footer />
+
+    return (
+      <Router>
+        <div className="App">
+          <NavBar />
+          <div style={{ minHeight: '45vh' }}>
+            <Suspense fallback={<LoadingPage />}>
+              <Switch>
+                <Route
+                  exact
+                  path="/"
+                  render={() => (
+                    <Home table={table} isMenuLoaded={isMenuLoaded} />
+                  )}
+                />
+                <Route
+                  path="/menu"
+                  render={() => (
+                    <MenuPage
+                      menu={menu}
+                      order={order}
+                      total={total}
+                      setOrder={this.setOrder}
+                    />
+                  )}
+                />
+                <Route
+                  path="/review"
+                  render={() => (
+                    <Review
+                      order={order}
+                      total={total}
+                      saveCreds={this.saveCreds}
+                    />
+                  )}
+                />
+                <Route
+                  path="/payment"
+                  render={() => (
+                    <Payment
+                      total={total}
+                      name={name}
+                      email={email}
+                      order={order}
+                    />
+                  )}
+                />
+                <Route
+                  path="/success"
+                  render={() => (
+                    <Success
+                      total={total}
+                      name={name}
+                      email={email}
+                      order={order}
+                    />
+                  )}
+                />
+                <Route path="/about-us" render={() => <AboutUs />} />
+                <Route render={() => <NotFound />} />
+              </Switch>
+            </Suspense>
           </div>
-        </Router>
-      )
-    } else {
-      return <LoadingPage />
-    }
+          <Footer />
+        </div>
+      </Router>
+    )
   }
 }
 
