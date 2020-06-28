@@ -18,14 +18,24 @@ class ShowSides extends React.Component {
 
   componentDidMount() {
     const { item } = this.props
-    if (sessionStorage.getItem(item.id)) {
-      this.setState(
-        {
-          quantity: Number(sessionStorage.getItem(item.id)),
-        },
-        () => this.setState({ price: this.state.quantity * item.price })
-      )
-    }
+    // if (sessionStorage.getItem(item.id)) {
+    //   this.setState(
+    //     {
+    //       quantity: Number(sessionStorage.getItem(item.id)),
+    //     },
+    //     () => this.setState({ price: this.state.quantity * item.price })
+    //   )
+    // }
+    this.props.order.forEach((el) => {
+      if (el.dishObj.id === item.id) {
+        this.setState(
+          {
+            quantity: el.qty,
+          },
+          () => this.setState({ price: this.state.quantity * item.price })
+        )
+      }
+    })
   }
 
   render() {
@@ -114,6 +124,7 @@ class ShowSides extends React.Component {
             ? item.sides.map((item, idx) => {
                 return (
                   <ShowSides
+                    order={this.props.order}
                     item={item}
                     key={idx}
                     updateTotal={this.props.updateTotal}
@@ -227,6 +238,7 @@ export default class Home extends Component {
                   {menu.menuItems.starters.map((item, idx) => {
                     return (
                       <ShowSides
+                        order={this.props.order}
                         item={item}
                         key={idx}
                         updateTotal={this.updateTotal}
@@ -242,6 +254,7 @@ export default class Home extends Component {
                   {menu.menuItems.mainCourse.map((item, idx) => {
                     return (
                       <ShowSides
+                        order={this.props.order}
                         item={item}
                         key={idx}
                         updateTotal={this.updateTotal}
@@ -257,6 +270,7 @@ export default class Home extends Component {
                   {menu.menuItems.sides.map((item, idx) => {
                     return (
                       <ShowSides
+                        order={this.props.order}
                         item={item}
                         key={idx}
                         updateTotal={this.updateTotal}
@@ -272,6 +286,7 @@ export default class Home extends Component {
                   {menu.menuItems.beverages.map((item, idx) => {
                     return (
                       <ShowSides
+                        order={this.props.order}
                         item={item}
                         key={idx}
                         updateTotal={this.updateTotal}
