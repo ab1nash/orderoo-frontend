@@ -20,7 +20,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isMenuLoaded: 'false',
+      isMenuLoaded: false,
       table: '2',
       menu: [],
       order: [],
@@ -31,22 +31,24 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    db.collection('access_test')
-      .get()
-      .then((snapShots) => {
-        this.setState({
-          menu: snapShots.docs.map((doc) => {
-            return {
-              id: doc.id,
-              item: doc.data().item,
-            }
-          }),
+    if (!this.state.isMenuLoaded) {
+      db.collection('access_test')
+        .get()
+        .then((snapShots) => {
+          this.setState({
+            menu: snapShots.docs.map((doc) => {
+              return {
+                id: doc.id,
+                item: doc.data().item,
+              }
+            }),
+          })
         })
-      })
-      .then(() => {
-        this.setState({ isMenuLoaded: true })
-      })
-
+        .then(() => {
+          this.setState({ isMenuLoaded: true })
+          console.log('read from db')
+        })
+    }
     if (sessionStorage.getItem('total')) {
       this.setState({ total: Number(sessionStorage.getItem('total')) })
     }

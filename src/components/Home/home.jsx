@@ -9,6 +9,9 @@ export default class Home extends Component {
       // client side deets ?
     }
   }
+  componentDidMount() {
+    sessionStorage.clear()
+  }
   render() {
     const { table } = this.props
     return (
