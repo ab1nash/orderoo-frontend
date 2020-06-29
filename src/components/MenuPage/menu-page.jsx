@@ -154,10 +154,15 @@ export default class Home extends Component {
 
   componentDidMount() {
     if (this.state.call === 'Menu')
-      if (localStorage.getItem('menu')) {
-        this.setState({
-          menu: JSON.parse(localStorage.getItem('menu_cached')),
-        })
+      if (localStorage.getItem('menu_cached')) {
+        this.setState(
+          {
+            menu: JSON.parse(localStorage.getItem('menu_cached')),
+            isMenuLoaded: true,
+            call: '',
+          },
+          () => console.log('menu from cache')
+        )
       } else {
         db.collection(this.state.call)
           .doc('1234')
@@ -167,16 +172,15 @@ export default class Home extends Component {
               menu: doc.data(),
             })
           })
-          .then(
-            () => {
-              this.setState({ isMenuLoaded: true, call: '' })
-            },
-            () =>
+          .then(() => {
+            this.setState({ isMenuLoaded: true, call: '' }, () =>
               localStorage.setItem(
                 'menu_cached',
                 JSON.stringify(this.state.menu)
               )
-          )
+            )
+          })
+          .then(console.log('menu from firestore'))
       }
     // do this on reload ?
 

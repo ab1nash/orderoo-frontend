@@ -12,6 +12,7 @@ export default class Success extends Component {
   componentWillUnmount() {
     sessionStorage.clear()
     localStorage.clear()
+    console.log('cleared sessionstorage and localstorage')
   }
   render() {
     return (
