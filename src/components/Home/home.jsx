@@ -3,12 +3,6 @@ import { Link } from 'react-router-dom'
 import './home.scss'
 
 export default class Home extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      // client side deets ?
-    }
-  }
   componentDidMount() {
     sessionStorage.clear()
   }

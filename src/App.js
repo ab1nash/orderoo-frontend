@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import LoadingPage from './components/Loading'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
-// import db from './firebase'
 
 import './App.scss'
 

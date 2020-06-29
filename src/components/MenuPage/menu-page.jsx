@@ -153,21 +153,31 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    //[TOFIX after testing] Calling it here is causing useless reads at every change.
-    // a hack for now is to set a state
     if (this.state.call === 'Menu')
-      db.collection(this.state.call)
-        .doc('1234')
-        .get()
-        .then((doc) => {
-          this.setState({
-            menu: doc.data(),
+      if (localStorage.getItem('menu')) {
+        this.setState({
+          menu: JSON.parse(localStorage.getItem('menu_cached')),
+        })
+      } else {
+        db.collection(this.state.call)
+          .doc('1234')
+          .get()
+          .then((doc) => {
+            this.setState({
+              menu: doc.data(),
+            })
           })
-        })
-        .then(() => {
-          this.setState({ isMenuLoaded: true, call: '' })
-        })
-
+          .then(
+            () => {
+              this.setState({ isMenuLoaded: true, call: '' })
+            },
+            () =>
+              localStorage.setItem(
+                'menu_cached',
+                JSON.stringify(this.state.menu)
+              )
+          )
+      }
     // do this on reload ?
 
     this.setState({ order: this.props.order, total: this.props.total })
