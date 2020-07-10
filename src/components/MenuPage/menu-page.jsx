@@ -114,26 +114,35 @@ class ShowSides extends React.Component {
           </div>
         </div>
         <div
-          className="container-sm ml-3 mr-3 my-3 shadow"
-          style={item.sides ? { border: 'solid 1px' } : {}}
+          className="container-sm ml-3 mr-3 my-3 "
+          // style={item.sides ? { border: 'solid 1px' } : {}}
         >
           {item.sides ? (
-            <h5 className="mx-auto pt-2 pb-2">Sides for this dish</h5>
+            <div class="wrap-collabsible">
+              <input id="collapsible" class="toggle" type="checkbox" />
+              <label for="collapsible" class="lbl-toggle">
+                Sides for this dish
+              </label>
+              <div class="collapsible-content">
+                <div class="content-inner border">
+                  {item.sides
+                    ? item.sides.map((item, idx) => {
+                        return (
+                          <ShowSides
+                            order={this.props.order}
+                            item={item}
+                            key={idx}
+                            updateTotal={this.props.updateTotal}
+                            addToOrder={this.props.addToOrder}
+                            noImg={true}
+                          />
+                        )
+                      })
+                    : null}
+                </div>
+              </div>
+            </div>
           ) : null}
-          {item.sides
-            ? item.sides.map((item, idx) => {
-                return (
-                  <ShowSides
-                    order={this.props.order}
-                    item={item}
-                    key={idx}
-                    updateTotal={this.props.updateTotal}
-                    addToOrder={this.props.addToOrder}
-                    noImg={true}
-                  />
-                )
-              })
-            : null}
         </div>
       </div>
     )
