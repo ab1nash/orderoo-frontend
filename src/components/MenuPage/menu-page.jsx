@@ -256,7 +256,7 @@ export default class Home extends Component {
               <div className="menu-description text-justify">
                 <p className="font-italic">{menu.description}</p>
                 <div className="container main-card border shadow-sm mt-4 pt-2">
-                  <h4>Starters</h4>
+                  <h4>STARTERS</h4>
                   <hr />
                   {menu.menuItems.starters.map((item, idx) => {
                     return (
@@ -272,7 +272,7 @@ export default class Home extends Component {
                   })}
                 </div>
                 <div className="container main-card border shadow-sm mt-4 pt-2">
-                  <h4>Main Course</h4>
+                  <h4>MAIN COURSE</h4>
                   <hr />
                   {menu.menuItems.mainCourse.map((item, idx) => {
                     return (
@@ -288,7 +288,7 @@ export default class Home extends Component {
                   })}
                 </div>
                 <div className="container main-card border shadow-sm mt-4 pt-2">
-                  <h4>Sides</h4>
+                  <h4>SIDES</h4>
                   <hr />
                   {menu.menuItems.sides.map((item, idx) => {
                     return (
@@ -304,7 +304,7 @@ export default class Home extends Component {
                   })}
                 </div>
                 <div className="container main-card border shadow-sm mt-4 pt-2">
-                  <h4>Beverages</h4>
+                  <h4>BEVERAGES</h4>
                   <hr />
                   {menu.menuItems.beverages.map((item, idx) => {
                     return (
