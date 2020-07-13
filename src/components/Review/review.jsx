@@ -51,37 +51,35 @@ export default class Review extends Component {
   }
   handleChange = (name) => (e) => {
     e.preventDefault()
-    this.setState({ [name]: e.target.value })
-
-    if (this.state.name.length > 3 && this.validateEmail(this.state.email)) {
-      this.setState({ target: '/payment', err: '' })
-    } else {
-      if (name === 'name') {
-        if (this.state.name.length < 3) {
-          this.setState({
-            target: '#',
-            err: '* The name must be greater than three characters long',
-          })
-        } else {
-          this.setState({
-            target: '#',
-            err: '',
-          })
-        }
-      } else if (name === 'email') {
-        if (!this.validateEmail(this.state.email)) {
-          this.setState({
-            target: '#',
-            err: '* Please enter the email as follows- example@example.com',
-          })
-        } else {
-          this.setState({
-            target: '#',
-            err: '',
-          })
+    this.setState({ [name]: e.target.value }, () => {
+      if (this.state.name.length > 3 && this.validateEmail(this.state.email)) {
+        this.setState({ target: '/payment', err: '' })
+      } else {
+        if (name === 'name') {
+          if (this.state.name.length < 3) {
+            this.setState({
+              target: '#',
+              err: '* The name must be greater than three characters long',
+            })
+          } else {
+            this.setState({
+              err: '',
+            })
+          }
+        } else if (name === 'email') {
+          if (!this.validateEmail(this.state.email)) {
+            this.setState({
+              target: '#',
+              err: '* Please enter the email as follows- example@example.com',
+            })
+          } else {
+            this.setState({
+              err: '',
+            })
+          }
         }
       }
-    }
+    })
   }
   render() {
     const { name, email, target } = this.state
