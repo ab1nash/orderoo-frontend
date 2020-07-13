@@ -18,14 +18,7 @@ class ShowSides extends React.Component {
 
   componentDidMount() {
     const { item } = this.props
-    // if (sessionStorage.getItem(item.id)) {
-    //   this.setState(
-    //     {
-    //       quantity: Number(sessionStorage.getItem(item.id)),
-    //     },
-    //     () => this.setState({ price: this.state.quantity * item.price })
-    //   )
-    // }
+
     this.props.order.forEach((el) => {
       if (el.dishObj.id === item.id) {
         this.setState(
@@ -119,8 +112,8 @@ class ShowSides extends React.Component {
         >
           {item.sides ? (
             <div class="wrap-collabsible">
-              <input id="collapsible" class="toggle" type="checkbox" />
-              <label for="collapsible" class="lbl-toggle">
+              <input id={item.sides[0].id} class="toggle" type="checkbox" />
+              <label for={item.sides[0].id} class="lbl-toggle">
                 Sides for this dish
               </label>
               <div class="collapsible-content">
@@ -256,68 +249,100 @@ export default class Home extends Component {
               <div className="menu-description text-justify">
                 <p className="font-italic">{menu.description}</p>
                 <div className="container main-card border shadow-sm mt-4 pt-2">
-                  <h4>STARTERS</h4>
-                  <hr />
-                  {menu.menuItems.starters.map((item, idx) => {
-                    return (
-                      <ShowSides
-                        order={this.props.order}
-                        item={item}
-                        key={idx}
-                        updateTotal={this.updateTotal}
-                        addToOrder={this.addToOrder}
-                        noImg={false}
-                      />
-                    )
-                  })}
+                  <div class="wrap-collabsible">
+                    <input id="starters" class="toggle" type="checkbox" />
+                    <label for="starters" class="lbl-toggle">
+                      STARTERS
+                    </label>
+                    <div class="collapsible-content">
+                      <div class="content-inner border">
+                        {menu.menuItems.starters.map((item, idx) => {
+                          return (
+                            <ShowSides
+                              order={this.props.order}
+                              item={item}
+                              key={idx}
+                              updateTotal={this.updateTotal}
+                              addToOrder={this.addToOrder}
+                              noImg={false}
+                            />
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div className="container main-card border shadow-sm mt-4 pt-2">
-                  <h4>MAIN COURSE</h4>
-                  <hr />
-                  {menu.menuItems.mainCourse.map((item, idx) => {
-                    return (
-                      <ShowSides
-                        order={this.props.order}
-                        item={item}
-                        key={idx}
-                        updateTotal={this.updateTotal}
-                        addToOrder={this.addToOrder}
-                        noImg={false}
-                      />
-                    )
-                  })}
+                  <div class="wrap-collabsible">
+                    <input id="main-course" class="toggle" type="checkbox" />
+                    <label for="main-course" class="lbl-toggle">
+                      MAIN COURSE
+                    </label>
+                    <div class="collapsible-content">
+                      <div class="content-inner border">
+                        {menu.menuItems.mainCourse.map((item, idx) => {
+                          return (
+                            <ShowSides
+                              order={this.props.order}
+                              item={item}
+                              key={idx}
+                              updateTotal={this.updateTotal}
+                              addToOrder={this.addToOrder}
+                              noImg={false}
+                            />
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div className="container main-card border shadow-sm mt-4 pt-2">
-                  <h4>SIDES</h4>
-                  <hr />
-                  {menu.menuItems.sides.map((item, idx) => {
-                    return (
-                      <ShowSides
-                        order={this.props.order}
-                        item={item}
-                        key={idx}
-                        updateTotal={this.updateTotal}
-                        addToOrder={this.addToOrder}
-                        noImg={false}
-                      />
-                    )
-                  })}
+                  <div class="wrap-collabsible">
+                    <input id="sides-1" class="toggle" type="checkbox" />
+                    <label for="sides-1" class="lbl-toggle">
+                      SIDES
+                    </label>
+                    <div class="collapsible-content">
+                      <div class="content-inner border">
+                        {menu.menuItems.sides.map((item, idx) => {
+                          return (
+                            <ShowSides
+                              order={this.props.order}
+                              item={item}
+                              key={idx}
+                              updateTotal={this.updateTotal}
+                              addToOrder={this.addToOrder}
+                              noImg={false}
+                            />
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div className="container main-card border shadow-sm mt-4 pt-2">
-                  <h4>BEVERAGES</h4>
-                  <hr />
-                  {menu.menuItems.beverages.map((item, idx) => {
-                    return (
-                      <ShowSides
-                        order={this.props.order}
-                        item={item}
-                        key={idx}
-                        updateTotal={this.updateTotal}
-                        addToOrder={this.addToOrder}
-                        noImg={false}
-                      />
-                    )
-                  })}
+                  <div class="wrap-collabsible">
+                    <input id="bev" class="toggle" type="checkbox" />
+                    <label for="bev" class="lbl-toggle">
+                      BEVERAGES
+                    </label>
+                    <div class="collapsible-content">
+                      <div class="content-inner border">
+                        {menu.menuItems.beverages.map((item, idx) => {
+                          return (
+                            <ShowSides
+                              order={this.props.order}
+                              item={item}
+                              key={idx}
+                              updateTotal={this.updateTotal}
+                              addToOrder={this.addToOrder}
+                              noImg={false}
+                            />
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
