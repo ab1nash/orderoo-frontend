@@ -25,7 +25,8 @@ class ShowSides extends React.Component {
           {
             quantity: el.qty,
           },
-          () => this.setState({ price: this.state.quantity * item.price })
+          () =>
+            this.setState({ price: this.state.quantity * (item.price / 100) })
         )
       }
     })
@@ -40,7 +41,7 @@ class ShowSides extends React.Component {
           <div className="col-9">
             <div className="row">
               <div className="col-5  mt-1 mb-1">{item.name}</div>
-              <div className="col-4  mt-1 mb-1">$ {item.price}</div>
+              <div className="col-4  mt-1 mb-1">$ {item.price / 100}</div>
             </div>
             <br />
             <div className="row mx-auto">{item.description}</div>
@@ -69,11 +70,14 @@ class ShowSides extends React.Component {
               onClick={() => {
                 this.setState(
                   {
-                    price: !price ? 0 : Number((price - item.price).toFixed(2)),
+                    price: !price
+                      ? 0
+                      : Number((price - item.price / 100).toFixed(2)),
                     quantity: !quantity ? 0 : quantity - 1,
                   },
                   () => {
-                    if (quantity >= 1) this.props.updateTotal(-item.price)
+                    if (quantity >= 1)
+                      this.props.updateTotal(-(item.price / 100))
                     // something to remove order from order list
                     addToOrder(item, quantity - 1, 'remove')
                   }
@@ -92,11 +96,11 @@ class ShowSides extends React.Component {
               onClick={() => {
                 this.setState(
                   {
-                    price: Number((price + item.price).toFixed(2)),
+                    price: Number((price + item.price / 100).toFixed(2)),
                     quantity: quantity + 1,
                   },
                   () => {
-                    if (quantity >= 0) this.props.updateTotal(item.price)
+                    if (quantity >= 0) this.props.updateTotal(item.price / 100)
                     addToOrder(item, quantity + 1)
                   }
                 )
@@ -289,7 +293,7 @@ export default class Home extends Component {
             {/* menu */}
             <div className="total-bottom">
               <div className="row shadow mx-auto mt-2 mb-2 pt-2 pb-2 pl-2 text-center border">
-                Your total is ${total}
+                Your total is ${Number(total.toFixed(2))}
               </div>
               {/* buttons */}
               <div className="row mx-2">

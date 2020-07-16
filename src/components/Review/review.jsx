@@ -19,7 +19,9 @@ class Element extends React.Component {
           <div className="col mt-4 mb-2">{dishObj.name}</div>
           <div className="col mt-4 mb-2">{qty}</div>
 
-          <div className="col mt-4 mb-2">$ {dishObj.price * qty}</div>
+          <div className="col mt-4 mb-2">
+            $ {Number((dishObj.price / 100) * qty).toFixed(2)}
+          </div>
         </div>
       </div>
     )
@@ -107,7 +109,9 @@ export default class Review extends Component {
                 <div className="col mt-4 mb-2"></div>
                 <div className="col mt-4 mb-2 ">TOTAL</div>
 
-                <div className="col mt-4 mb-2 font-weight-bold">$ {total}</div>
+                <div className="col mt-4 mb-2 font-weight-bold">
+                  $ {Number(total.toFixed(2))}
+                </div>
               </div>
             </div>
           </div>
