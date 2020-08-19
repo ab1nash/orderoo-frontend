@@ -2,7 +2,7 @@ import firebase from 'firebase/app'
 import 'firebase/firebase-firestore'
 
 var firebaseConfig = {
-  apiKey: 'AIzaSyBp6J0GQknA9OhdKT1AexwpQc1dUbVT9zE',
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: 'ordero-9e47f.firebaseapp.com',
   databaseURL: 'https://ordero-9e47f.firebaseio.com',
   projectId: 'ordero-9e47f',
